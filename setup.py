@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Splendid, a collection of useful, small python tools.
-"""
+"""Splendid, a collection of useful, small python tools."""
 from __future__ import print_function
 
 from codecs import open
