@@ -1,0 +1,2 @@
+# tell pip to parse setup.py's requirements:
+.
