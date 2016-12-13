@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """Splendid, a collection of useful, small python tools."""
+from __future__ import absolute_import
+from __future__ import division
 from __future__ import print_function
 
 from codecs import open

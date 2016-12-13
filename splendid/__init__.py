@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
-
-from version import __version__
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
 
 from functools import wraps
 from itertools import izip_longest
 from timeit import default_timer as timer
 
+from splendid.version import __version__
 
 __all__ = [
     'chunker',
