@@ -7,6 +7,14 @@ from itertools import izip_longest
 from timeit import default_timer as timer
 
 
+__all__ = [
+    'chunker',
+    'get_path',
+    'run_once',
+    'time_func',
+]
+
+
 def chunker(iterable, n, fillvalue=None, dtype=list):
     """Like a grouper but last tuple is shorter.
 
@@ -22,13 +30,16 @@ def chunker(iterable, n, fillvalue=None, dtype=list):
     )
 
 
-def get_path(nested, key_path, default=None):
+def get_path(
+        nested,
+        key_path,
+        default=None,
+        expected_errors=(LookupError, TypeError)):
     """Walk given dicts/lists by key_path returning default on any LookupError.
 
-    :param nested: a nested dictionary or list like structure
-    :param key_path: a list resembling a nested path of keys
-    :param default: returned if any key in the path isn't found
-    :return: value of nested[k0][k1]...[kn] or default on error
+    Useful to quickly extract information from nested data structures. Typical
+    examples are nested dicts and lists that you for example obtained from
+    `json.loads()`.
 
     >>> get_path({'foo':[{'bar':3}]}, ['foo'], 'not found')
     [{'bar': 3}]
@@ -39,14 +50,13 @@ def get_path(nested, key_path, default=None):
     >>> get_path({'foo':[{'bar':3}]}, ['foo', 0], 'not found')
     {'bar': 3}
     """
-    while len(key_path) > 0:
-        key, rest = key_path[0], key_path[1:]
+    rest = nested
+    for key in key_path:
         try:
-            nested = nested[key]
+            rest = rest[key]
         except (LookupError, TypeError):
             return default
-        key_path = rest
-    return nested
+    return rest
 
 
 def run_once(func):
@@ -74,9 +84,3 @@ def time_func(func, *args, **kwds):
     return stop - start, res
 
 
-__all__ = [
-    'chunker',
-    'get_path',
-    'run_once',
-    'time_func',
-]
