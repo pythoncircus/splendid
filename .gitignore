@@ -1,3 +1,10 @@
 # Compiled Python files
 *.pyc
 *.pyo
+
+/.cache/
+/.eggs/
+/build/
+/dist/
+/*.egg-info/
+/venv/
