@@ -40,4 +40,6 @@ setup(
     ],
     keywords='splendid tools utils wrappers useful small often needed',
     packages=['splendid'],
+    setup_requires=['pytest-runner'],
+    tests_require=['pytest'],
 )
