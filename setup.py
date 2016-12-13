@@ -8,8 +8,6 @@ from codecs import open
 from os import path
 from setuptools import setup
 
-from splendid.version import __version__
-
 
 ROOT = path.abspath(path.dirname(__file__))
 
@@ -18,13 +16,26 @@ ROOT = path.abspath(path.dirname(__file__))
 with open(path.join(ROOT, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+
+# extract version from splendid/__init__.py
+with open(path.join(ROOT, 'splendid', '__init__.py'), encoding='utf-8') as f:
+    version = None
+    for line in f:
+        if line.startswith('__version__ = '):
+            version = line.split('=')[1].split('#')[0]\
+                .strip().strip('"').strip("'")
+            break
+    else:
+        raise SyntaxError('could not find __version__')
+
+
 requirements = [
     'six',
 ]
 
 setup(
     name='splendid',
-    version=__version__,
+    version=version,
     description=__doc__,
     long_description=long_description,
     url='https://github.com/pythoncircus/splendid',
@@ -50,4 +61,5 @@ setup(
     tests_require=requirements + [
         'pytest',
     ],
+    zipsafe=True,
 )

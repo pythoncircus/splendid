@@ -7,7 +7,9 @@ from functools import wraps
 from six.moves import zip_longest
 from timeit import default_timer as timer
 
-from splendid.version import __version__
+
+# we use http://semver.org
+__version__ = '1.0.0-dev1'
 
 __all__ = [
     'chunker',
