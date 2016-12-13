@@ -13,7 +13,7 @@ ROOT = path.abspath(path.dirname(__file__))
 
 
 # Use the README as the long description
-with open(path.join(ROOT, 'README.md'), encoding='utf-8') as f:
+with open(path.join(ROOT, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 
