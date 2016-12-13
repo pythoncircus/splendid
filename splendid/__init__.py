@@ -4,7 +4,7 @@ from __future__ import division
 from __future__ import print_function
 
 from functools import wraps
-from itertools import izip_longest
+from six.moves import zip_longest
 from timeit import default_timer as timer
 
 from splendid.version import __version__
@@ -28,7 +28,7 @@ def chunker(iterable, n, fillvalue=None, dtype=list):
     args = [iter(iterable)] * n
     return (
         dtype(e for e in t if e is not None)
-        for t in izip_longest(*args, fillvalue=fillvalue)
+        for t in zip_longest(*args, fillvalue=fillvalue)
     )
 
 
