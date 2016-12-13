@@ -13,9 +13,9 @@ script:
 
 deploy:
   provider: pypi
-  user: joernhees
+  user: "$PYPI_USER"
   password:
-    $ENC_PYPI_PW
+    secure: "$PYPI_PW"
   on:
     tags: true
     distributions: sdist bdist_wheel
