@@ -18,6 +18,9 @@ ROOT = path.abspath(path.dirname(__file__))
 with open(path.join(ROOT, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+requirements = [
+    'six',
+]
 
 setup(
     name='splendid',
@@ -42,9 +45,9 @@ setup(
     ],
     keywords='splendid tools utils wrappers useful small often needed',
     packages=['splendid'],
-    install_requires=[
-        'six',
-    ],
+    install_requires=requirements,
     setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
+    tests_require=requirements + [
+        'pytest',
+    ],
 )
