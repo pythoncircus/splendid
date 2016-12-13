@@ -49,18 +49,31 @@ def get_path(
     3
     >>> get_path({'foo':[{'bar':3}]}, ['foo', 0], 'not found')
     {'bar': 3}
+
+    :param nested: a nested dictionary or list like structure
+    :param key_path: an iterable resembling a path of keys
+    :param default: returned if any key in the path isn't found
+    :param expected_errors: expected errors, use for custom data structures
+    :return: value of nested[k0][k1]...[kn] or default (default: None) on error
     """
     rest = nested
     for key in key_path:
         try:
             rest = rest[key]
-        except (LookupError, TypeError):
+        except expected_errors:
             return default
     return rest
 
 
 def run_once(func):
-    """Decorator that causes a function to be executed only once."""
+    """Decorator that causes a function to be executed only once.
+    >>> @run_once
+    ... def foo():
+    ...     print('bar')
+    >>> for i in range(10):
+    ...     foo()
+    bar
+    """
     @wraps(func)
     def wrapper(*args, **kwds):
         if not wrapper.ran:
@@ -71,12 +84,22 @@ def run_once(func):
 
 
 def time_func(func, *args, **kwds):
-    """Calls func with given args and returns a (timediff, res) tuple.
+    """Calls func with given args and returns a (seconds, res) tuple.
+
+    >>> def foo(a, b):
+    ...    return a + b
+    >>> t, res = time_func(foo, 1, b=2)
+    >>> res
+    3
+    >>> isinstance(t, float)
+    True
+    >>> t < 1.
+    True
 
     :param func: function to be evaluated
     :param args: args for func
     :param kwds: kwds for func
-    :return: a tuple: (timediff, func(*args, **kwds)
+    :return: a tuple: (seconds, func(*args, **kwds)
     """
     start = timer()
     res = func(*args, **kwds)
@@ -84,3 +107,6 @@ def time_func(func, *args, **kwds):
     return stop - start, res
 
 
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
