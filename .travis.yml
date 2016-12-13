@@ -15,8 +15,9 @@ deploy:
   provider: pypi
   user: joernhees
   password:
-    secure: $ENC_PYPI_PW
+    $ENC_PYPI_PW
   on:
     tags: true
     distributions: sdist bdist_wheel
     repo: pythoncircus/splendid
+    python: "2.7"
