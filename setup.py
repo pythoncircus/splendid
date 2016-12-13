@@ -61,5 +61,5 @@ setup(
     tests_require=requirements + [
         'pytest',
     ],
-    zipsafe=True,
+    zip_safe=True,
 )
