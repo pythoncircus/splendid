@@ -6,6 +6,7 @@ from __future__ import print_function
 from functools import wraps
 from six.moves import zip_longest
 from timeit import default_timer as timer
+import datetime
 
 
 # we use http://semver.org
@@ -109,6 +110,62 @@ def time_func(func, *args, **kwds):
     res = func(*args, **kwds)
     stop = timer()
     return stop - start, res
+
+
+def timedelta_to_microseconds(td):
+    """Convert a timedelta object into microseconds.
+
+    :param td: a timedelta object
+
+    Also see timedelta_to_ms and timedelta_to_s below.
+
+    >>> dt1 = datetime.datetime(2010, 10, 28, 19, 14, 12, 1539)
+    >>> dt1
+    datetime.datetime(2010, 10, 28, 19, 14, 12, 1539)
+    >>> dt2 = datetime.datetime(2010, 10, 28, 19, 15, 12, 298)
+
+    Notice how dt1 is nearly a minute before dt2:
+    >>> print(dt2 - dt1)
+    0:00:59.998759
+    >>> print(timedelta_to_s(dt2 - dt1))
+    59.998759
+    >>> print(timedelta_to_ms(dt2 - dt1))
+    59998.759
+    >>> print(timedelta_to_microseconds(dt2 - dt1))
+    59998759
+
+    Now the following shows some weirdness in formatting -1 day + 23:59 h
+    makes ~1 minute:
+    >>> print(dt1 - dt2)
+    -1 day, 23:59:00.001241
+
+    If all is expressed in ms:
+    >>> print(timedelta_to_s(dt1 - dt2))
+    -59.998759
+
+    >>> print(timedelta_to_microseconds(dt1 - dt1))
+    0
+    >>> dt3 = datetime.datetime(2010, 10, 28, 19, 15, 12, 297000)
+    >>> print(timedelta_to_ms(dt2 - dt3))
+    -296.702
+    >>> dt4 = datetime.datetime(2010, 10, 28, 19, 15, 12, 298000)
+    >>> print(timedelta_to_ms(dt4 - dt3))
+    1.0
+    """
+    return (
+        td.days * 24 * 60 * 60 * 1000000
+        + td.seconds * 1000000
+        + td.microseconds
+    )
+
+
+def timedelta_to_ms(td):
+    return timedelta_to_microseconds(td) / 1000
+
+
+def timedelta_to_s(td):
+    return timedelta_to_microseconds(td) / 1000000
+
 
 
 if __name__ == '__main__':
