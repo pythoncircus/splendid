@@ -116,8 +116,6 @@ def time_func(func, *args, **kwds):
 def timedelta_to_microseconds(td):
     """Convert a timedelta object into microseconds.
 
-    :param td: a timedelta object
-
     Also see timedelta_to_ms and timedelta_to_s below.
 
     >>> dt1 = datetime.datetime(2010, 10, 28, 19, 14, 12, 1539)
@@ -152,6 +150,8 @@ def timedelta_to_microseconds(td):
     >>> dt4 = datetime.datetime(2010, 10, 28, 19, 15, 12, 298000)
     >>> print(timedelta_to_ms(dt4 - dt3))
     1.0
+
+    :param td: a timedelta object
     """
     return (
         td.days * 24 * 60 * 60 * 1000000
