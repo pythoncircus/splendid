@@ -1,13 +1,56 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+'''Convenience version of the itertool recipies found in python docs.
+
+These were initially copied from
+https://docs.python.org/2/library/itertools.html#recipes .
+
+Main changes:
+- code formatting
+- doctests
+- python 2 and 3 compatibility via six
+- optimization by replacing global lookups with local default vars
+'''
+
+import collections
+from itertools import chain
+from itertools import combinations
+from itertools import count
+from itertools import cycle
+from itertools import groupby
+from itertools import ifilterfalse
+from itertools import imap
+from itertools import islice
+from itertools import izip
+from itertools import repeat
+from itertools import starmap
+from itertools import tee
+
+import operator
+from operator import itemgetter
+import random
+
+# noinspection PyUnresolvedReferences
+from six.moves import (
+    range,
+    zip_longest,
+)
+
+
 def take(n, iterable):
-    "Return first n items of the iterable as a list"
+    """Return first n items of the iterable as a list"""
     return list(islice(iterable, n))
 
+
 def tabulate(function, start=0):
-    "Return function(0), function(1), ..."
+    """Return function(0), function(1), ..."""
     return imap(function, count(start))
 
+
 def consume(iterator, n):
-    "Advance the iterator n-steps ahead. If n is none, consume entirely."
+    """Advance the iterator n-steps ahead. If n is none, consume entirely."""
     # Use functions that consume iterators at C speed.
     if n is None:
         # feed the entire iterator into a zero-length deque
@@ -16,18 +59,22 @@ def consume(iterator, n):
         # advance to the empty slice starting at position n
         next(islice(iterator, n, n), None)
 
+
 def nth(iterable, n, default=None):
-    "Returns the nth item or a default value"
+    """Returns the nth item or a default value"""
     return next(islice(iterable, n, None), default)
 
+
 def all_equal(iterable):
-    "Returns True if all the elements are equal to each other"
+    """Returns True if all the elements are equal to each other"""
     g = groupby(iterable)
     return next(g, True) and not next(g, False)
 
+
 def quantify(iterable, pred=bool):
-    "Count how many times the predicate is true"
+    """Count how many times the predicate is true"""
     return sum(imap(pred, iterable))
+
 
 def padnone(iterable):
     """Returns the sequence elements and then returns None indefinitely.
@@ -36,16 +83,20 @@ def padnone(iterable):
     """
     return chain(iterable, repeat(None))
 
+
 def ncycles(iterable, n):
-    "Returns the sequence elements n times"
+    """Returns the sequence elements n times"""
     return chain.from_iterable(repeat(tuple(iterable), n))
+
 
 def dotproduct(vec1, vec2):
     return sum(imap(operator.mul, vec1, vec2))
 
-def flatten(listOfLists):
-    "Flatten one level of nesting"
-    return chain.from_iterable(listOfLists)
+
+def flatten(list_of_lists):
+    """Flatten one level of nesting"""
+    return chain.from_iterable(list_of_lists)
+
 
 def repeatfunc(func, times=None, *args):
     """Repeat calls to func with specified arguments.
@@ -56,38 +107,44 @@ def repeatfunc(func, times=None, *args):
         return starmap(func, repeat(args))
     return starmap(func, repeat(args, times))
 
+
 def pairwise(iterable):
-    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
     a, b = tee(iterable)
     next(b, None)
     return izip(a, b)
 
+
 def grouper(iterable, n, fillvalue=None):
-    "Collect data into fixed-length chunks or blocks"
+    """Collect data into fixed-length chunks or blocks"""
     # grouper('ABCDEFG', 3, 'x') --> ABC DEF Gxx
     args = [iter(iterable)] * n
-    return izip_longest(fillvalue=fillvalue, *args)
+    return zip_longest(fillvalue=fillvalue, *args)
+
 
 def roundrobin(*iterables):
-    "roundrobin('ABC', 'D', 'EF') --> A D E B F C"
+    """roundrobin('ABC', 'D', 'EF') --> A D E B F C"""
     # Recipe credited to George Sakkis
     pending = len(iterables)
     nexts = cycle(iter(it).next for it in iterables)
     while pending:
         try:
-            for next in nexts:
-                yield next()
+            for next_ in nexts:
+                yield next_()
         except StopIteration:
             pending -= 1
             nexts = cycle(islice(nexts, pending))
 
+
 def powerset(iterable):
-    "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
+    """powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"""
     s = list(iterable)
     return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
 
+
 def unique_everseen(iterable, key=None):
-    "List unique elements, preserving order. Remember all elements ever seen."
+    """List unique elements, preserving order. Remember all elements ever seen.
+    """
     # unique_everseen('AAAABBBCCDAABBB') --> A B C D
     # unique_everseen('ABBCcAD', str.lower) --> A B C D
     seen = set()
@@ -103,11 +160,14 @@ def unique_everseen(iterable, key=None):
                 seen_add(k)
                 yield element
 
+
 def unique_justseen(iterable, key=None):
-    "List unique elements, preserving order. Remember only the element just seen."
+    """List unique elements, preserving order. Remember only element just seen.
+    """
     # unique_justseen('AAAABBBCCDAABBB') --> A B C D A B
     # unique_justseen('ABBCcAD', str.lower) --> A B C A D
     return imap(next, imap(itemgetter(1), groupby(iterable, key)))
+
 
 def iter_except(func, exception, first=None):
     """ Call a function repeatedly until an exception is raised.
@@ -133,30 +193,35 @@ def iter_except(func, exception, first=None):
     except exception:
         pass
 
+
 def random_product(*args, **kwds):
-    "Random selection from itertools.product(*args, **kwds)"
+    """Random selection from product(*args, **kwds)"""
     pools = map(tuple, args) * kwds.get('repeat', 1)
     return tuple(random.choice(pool) for pool in pools)
 
+
 def random_permutation(iterable, r=None):
-    "Random selection from itertools.permutations(iterable, r)"
+    """Random selection from permutations(iterable, r)"""
     pool = tuple(iterable)
     r = len(pool) if r is None else r
     return tuple(random.sample(pool, r))
 
+
 def random_combination(iterable, r):
-    "Random selection from itertools.combinations(iterable, r)"
+    """Random selection from combinations(iterable, r)"""
     pool = tuple(iterable)
     n = len(pool)
-    indices = sorted(random.sample(xrange(n), r))
+    indices = sorted(random.sample(range(n), r))
     return tuple(pool[i] for i in indices)
 
+
 def random_combination_with_replacement(iterable, r):
-    "Random selection from itertools.combinations_with_replacement(iterable, r)"
+    """Random selection from combinations_with_replacement(iterable, r)"""
     pool = tuple(iterable)
     n = len(pool)
-    indices = sorted(random.randrange(n) for i in xrange(r))
+    indices = sorted(random.randrange(n) for _ in range(r))
     return tuple(pool[i] for i in indices)
+
 
 def tee_lookahead(t, i):
     """Inspect the i-th upcomping value from a tee object
