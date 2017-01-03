@@ -20,10 +20,7 @@ from itertools import combinations
 from itertools import count
 from itertools import cycle
 from itertools import groupby
-from itertools import ifilterfalse
-from itertools import imap
 from itertools import islice
-from itertools import izip
 from itertools import repeat
 from itertools import starmap
 from itertools import tee
@@ -34,8 +31,11 @@ import random
 
 # noinspection PyUnresolvedReferences
 from six.moves import (
+    filterfalse,
+    map,
     range,
     zip_longest,
+    zip,
 )
 
 
@@ -44,7 +44,7 @@ def take(n, iterable, _list=list, _islice=islice):
     return _list(_islice(iterable, n))
 
 
-def tabulate(function, start=0, _imap=imap, _count=count):
+def tabulate(function, start=0, _imap=map, _count=count):
     """Return function(0), function(1), ..."""
     return _imap(function, _count(start))
 
@@ -71,7 +71,7 @@ def all_equal(iterable, _groupby=groupby, _next=next):
     return _next(g, True) and not _next(g, False)
 
 
-def quantify(iterable, pred=bool, _sum=sum, _imap=imap):
+def quantify(iterable, pred=bool, _sum=sum, _imap=map):
     """Count how many times the predicate is true"""
     return _sum(_imap(pred, iterable))
 
@@ -90,7 +90,7 @@ def ncycles(iterable, n,
     return _from_iterable(_repeat(_tuple(iterable), n))
 
 
-def dotproduct(vec1, vec2, _sum=sum, _imap=imap, _mul=operator.mul):
+def dotproduct(vec1, vec2, _sum=sum, _imap=map, _mul=operator.mul):
     return _sum(_imap(_mul, vec1, vec2))
 
 
@@ -109,7 +109,7 @@ def repeatfunc(func, times=None, *args):
     return starmap(func, repeat(args, times))
 
 
-def pairwise(iterable, _tee=tee, _next=next, _izip=izip):
+def pairwise(iterable, _tee=tee, _next=next, _izip=zip):
     """s -> (s0,s1), (s1,s2), (s2, s3), ..."""
     a, b = _tee(iterable)
     _next(b, None)
@@ -150,7 +150,7 @@ def powerset(
     return _from_iterable(_combinations(s, r) for r in _range(_len(s)+1))
 
 
-def unique_everseen(iterable, key=None, _set=set, _ifilterfalse=ifilterfalse):
+def unique_everseen(iterable, key=None, _set=set, _ifilterfalse=filterfalse):
     """List unique elements, preserving order. Remember all elements ever seen.
     """
     # unique_everseen('AAAABBBCCDAABBB') --> A B C D
@@ -170,7 +170,7 @@ def unique_everseen(iterable, key=None, _set=set, _ifilterfalse=ifilterfalse):
 
 
 def unique_justseen(iterable, key=None,
-                    _imap=imap, _itemgetter=itemgetter(1), _groupby=groupby):
+                    _imap=map, _itemgetter=itemgetter(1), _groupby=groupby):
     """List unique elements, preserving order. Remember only element just seen.
     """
     # unique_justseen('AAAABBBCCDAABBB') --> A B C D A B
@@ -205,7 +205,7 @@ def iter_except(func, exception, first=None):
 
 def random_product(*args, **kwds):
     """Random selection from product(*args, **kwds)"""
-    pools = map(tuple, args) * kwds.get('repeat', 1)
+    pools = tuple(map(tuple, args)) * kwds.get('repeat', 1)
     choice = random.choice
     return tuple(choice(pool) for pool in pools)
 
