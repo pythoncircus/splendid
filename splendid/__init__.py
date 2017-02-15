@@ -4,10 +4,11 @@ from __future__ import division
 from __future__ import print_function
 
 from functools import wraps
-# noinspection PyUnresolvedReferences
-from six.moves import zip_longest
 from timeit import default_timer as timer
 import datetime
+
+# noinspection PyUnresolvedReferences
+from six.moves import zip_longest
 
 
 # we use http://semver.org
