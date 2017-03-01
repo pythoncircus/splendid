@@ -9,6 +9,8 @@ Visit us on https://github.com/pythoncircus/splendid !
 Some Examples
 -------------
 
+.. code-block:: python
+
     >>> from splendid import chunker
     >>> list(chunker([1, 2, 3, 4, 5], 3))
     [[1, 2, 3], [4, 5]]
