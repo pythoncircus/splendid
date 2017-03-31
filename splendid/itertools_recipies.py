@@ -212,9 +212,8 @@ def repeatfunc(func, times=None, *args):
     """Repeat calls to func with specified arguments.
 
     >>> import random
-    >>> r = random.Random(42)  # init random with seed for reproducibility
-    >>> list(repeatfunc(r.randint, 10, 0, 100))
-    [64, 2, 27, 22, 74, 68, 90, 8, 42, 3]
+    >>> list(repeatfunc(take, 5, 2, [1, 2, 3]))
+    [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]]
     """
     if times is None:
         return starmap(func, repeat(args))
@@ -375,9 +374,9 @@ def iter_except(func, exception, first=None):
 def random_product(*args, **kwds):
     """Random selection from product(*args, **kwds)
     
-    >>> random.seed(42)
+    >>> random.seed(1)
     >>> random_product([1, 2, 3], [4, 5, 6])
-    (2, 4)
+    (1, 6)
     """
     pools = tuple(map(tuple, args)) * kwds.get('repeat', 1)
     choice = random.choice
@@ -388,9 +387,9 @@ def random_permutation(iterable, r=2,
                        _tuple=tuple, _len=len, _sample=random.sample):
     """Random selection from permutations(iterable, r)
     
-    >>> random.seed(42)
+    >>> random.seed(11)
     >>> random_permutation([1, 2, 3])
-    (2, 1)
+    (2, 3)
     """
     pool = _tuple(iterable)
     r = _len(pool) if r is None else r
@@ -407,9 +406,9 @@ def random_combination(
 ):
     """Random selection from combinations(iterable, r)
     
-    >>> random.seed(45)
+    >>> random.seed(0)
     >>> random_combination([1, 2, 3], 2)
-    (1, 3)
+    (2, 3)
     """
     pool = _tuple(iterable)
     n = _len(pool)
