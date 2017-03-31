@@ -18,7 +18,11 @@ __all__ = [
     'chunker',
     'get_path',
     'run_once',
+    'run_once',
     'time_func',
+    'timedelta_to_microseconds',
+    'timedelta_to_ms',
+    'timedelta_to_s',
 ]
 
 
@@ -70,6 +74,21 @@ def get_path(
         except expected_errors:
             return default
     return rest
+
+
+def remove_prefix(s, prefix, length=None):
+    """Remove prefix from s if exists.
+
+    >>> remove_prefix('foobar', 'foo')
+    'bar'
+    >>> remove_prefix('foobar', 'bar')
+    'foobar'
+    >>> remove_prefix('foobar', 'foo', 1)
+    'oobar'
+    """
+    if s.startswith(prefix):
+        return s[length or len(prefix):]
+    return s
 
 
 def run_once(func):
