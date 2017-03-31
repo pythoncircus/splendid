@@ -81,11 +81,11 @@ def get_path(
 def randbool():
     """Randomly return True or False.
 
-    >>> random.seed(42)
-    >>> randbool()
-    True
+    >>> random.seed(43)
     >>> randbool()
     False
+    >>> randbool()
+    True
     """
     return bool(random.randint(0, 1))
 
