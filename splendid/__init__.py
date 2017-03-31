@@ -6,6 +6,7 @@ from __future__ import print_function
 from functools import wraps
 from timeit import default_timer as timer
 import datetime
+import random
 
 # noinspection PyUnresolvedReferences
 from six.moves import zip_longest
@@ -17,6 +18,7 @@ __version__ = '1.0.3-dev'
 __all__ = [
     'chunker',
     'get_path',
+    'randbool',
     'run_once',
     'run_once',
     'time_func',
@@ -74,6 +76,18 @@ def get_path(
         except expected_errors:
             return default
     return rest
+
+
+def randbool():
+    """Randomly return True or False.
+
+    >>> random.seed(42)
+    >>> randbool()
+    True
+    >>> randbool()
+    False
+    """
+    return bool(random.randint(0, 1))
 
 
 def remove_prefix(s, prefix, length=None):
