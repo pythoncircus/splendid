@@ -29,6 +29,7 @@ import operator
 from operator import itemgetter
 import random
 
+from six import PY2
 # noinspection PyUnresolvedReferences
 from six.moves import (
     filterfalse,
@@ -264,7 +265,10 @@ def roundrobin(*iterables):
     """
     # Recipe credited to George Sakkis
     pending = len(iterables)
-    nexts = cycle(iter(it).next for it in iterables)
+    if PY2:
+        nexts = cycle(iter(it).next for it in iterables)
+    else:
+        nexts = cycle(iter(it).__next__ for it in iterables)
     while pending:
         try:
             for next_ in nexts:
