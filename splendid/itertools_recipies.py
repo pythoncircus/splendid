@@ -58,7 +58,7 @@ def take(n, iterable, _list=list, _islice=islice):
     return _list(_islice(iterable, n))
 
 
-def tabulate(function, start=0, _imap=map, _count=count):
+def tabulate(f, start=0, _imap=map, _count=count):
     """Return function(0), function(1), ...
 
     >>> def square(x):
@@ -66,7 +66,7 @@ def tabulate(function, start=0, _imap=map, _count=count):
     >>> take(5, tabulate(square))
     [0, 1, 4, 9, 16]
     """
-    return _imap(function, _count(start))
+    return _imap(f, _count(start))
 
 
 def consume(iterator, n, _deque=collections.deque, _next=next, _islice=islice):
@@ -212,7 +212,6 @@ def flatten(list_of_lists, _from_iterable=chain.from_iterable):
 def repeatfunc(func, times=None, *args):
     """Repeat calls to func with specified arguments.
 
-    >>> import random
     >>> list(repeatfunc(take, 5, 2, [1, 2, 3]))
     [[1, 2], [1, 2], [1, 2], [1, 2], [1, 2]]
     """
