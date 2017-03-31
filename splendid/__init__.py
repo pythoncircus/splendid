@@ -13,7 +13,7 @@ from six.moves import zip_longest
 
 
 # we use http://semver.org
-__version__ = '1.0.3-dev'
+__version__ = '1.1.0-dev'
 
 __all__ = [
     'chunker',
