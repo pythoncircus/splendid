@@ -82,18 +82,9 @@ def get_path(
 def make_dirs_for(file_path):
     """Try to create all necessary directories for file.
 
-    Some setup to get a dir where this test can write...
-    >>> from tempfile import mkdtemp
-    >>> from shutil import rmtree
-    >>> tmpdir = mkdtemp()
-
-    Actual example:
-    >>> my_filepath = os.path.join(tmpdir, 'some', 'dirs', 'testfile.txt')
-    >>> with open(make_dirs_for(my_filepath), 'w') as f:
-    ...     f.write("hello world")
-
-    Cleanup:
-    >>> rmtree(tmpdir)
+    Use like this:
+    with open(make_dirs_for(my_filepath), 'w') as f:
+        f.write("hello world")
     """
     try:
         os.makedirs(os.path.dirname(file_path))
