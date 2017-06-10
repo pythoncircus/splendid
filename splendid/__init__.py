@@ -18,7 +18,7 @@ from six.moves import zip_longest
 
 
 # we use http://semver.org
-__version__ = '1.1.0'
+__version__ = '1.1.1-dev'
 
 __all__ = [
     'chunker',
