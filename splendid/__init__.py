@@ -2,6 +2,10 @@
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
+"""Splendid, a collection of useful small python tools.
+
+https://github.com/pythoncircus/splendid
+"""
 
 import datetime
 import os
@@ -14,7 +18,7 @@ from six.moves import zip_longest
 
 
 # we use http://semver.org
-__version__ = '1.1.0-dev'
+__version__ = '1.1.0'
 
 __all__ = [
     'chunker',
