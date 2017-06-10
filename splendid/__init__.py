@@ -3,10 +3,11 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import datetime
+import os
+import random
 from functools import wraps
 from timeit import default_timer as timer
-import datetime
-import random
 
 # noinspection PyUnresolvedReferences
 from six.moves import zip_longest
@@ -18,8 +19,8 @@ __version__ = '1.1.0-dev'
 __all__ = [
     'chunker',
     'get_path',
+    'make_dirs_for',
     'randbool',
-    'run_once',
     'run_once',
     'time_func',
     'timedelta_to_microseconds',
@@ -76,6 +77,29 @@ def get_path(
         except expected_errors:
             return default
     return rest
+
+
+def make_dirs_for(file_path):
+    """Try to create all necessary directories for file.
+
+    Some setup to get a dir where this test can write...
+    >>> from tempfile import mkdtemp
+    >>> from shutil import rmtree
+    >>> tmpdir = mkdtemp()
+
+    Actual example:
+    >>> my_filepath = os.path.join(tmpdir, 'some', 'dirs', 'testfile.txt')
+    >>> with open(make_dirs_for(my_filepath), 'w') as f:
+    ...     f.write("hello world")
+
+    Cleanup:
+    >>> rmtree(tmpdir)
+    """
+    try:
+        os.makedirs(os.path.dirname(file_path))
+    except OSError:
+        pass
+    return file_path
 
 
 def randbool():
